@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package transactions;
+option go_package = "pkg/server";
+
+
+service TransactionsServer{
+  rpc Transactions(TransactionsRequest) returns(TransactionsResponse);
+}
+
+message Transaction{
+  int64 Id=1;
+  int64 UserId=2;
+  string Category=3;
+  int64 Amount=4;
+  int64 Created=5;
+}
+
+message TransactionsRequest{
+  int64 UserID=1;
+}
+
+message TransactionsResponse{
+  repeated Transaction items=1;
+}
