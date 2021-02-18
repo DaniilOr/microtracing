@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package auth;
+option go_package = "pkg/app/server";
+
+
+service AuthServer{
+  rpc Token(TokenRequest) returns(TokenResponse);
+  rpc Id(IdRequest) returns(IdResponse);
+}
+
+message TokenRequest{
+  string login=1;
+  string password=2;
+}
+
+message TokenResponse{
+  string Token=1;
+}
+
+message IdRequest{
+  string token=1;
+}
+
+message IdResponse{
+  int64 UserId = 1;
+}
