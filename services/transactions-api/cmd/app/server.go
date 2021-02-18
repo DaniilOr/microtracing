@@ -2,8 +2,8 @@ package app
 
 import (
 	"context"
-	serverPb "github.com/DaniilOr/microtracing/services/transactions/pkg/server"
-	"github.com/DaniilOr/microtracing/services/transactions/pkg/transactions"
+	serverPb "github.com/DaniilOr/microtracing/services/transactions-api/pkg/server"
+	"github.com/DaniilOr/microtracing/services/transactions-api/pkg/transactions"
 	"log"
 )
 

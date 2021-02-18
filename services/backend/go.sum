@@ -2,6 +2,7 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DaniilOr/microtracing v0.0.0-20210218104637-00d51fd7c472 h1:JxXa9DsbW62u0zV304aR9tTLGJO5WpDUkdxJDvDmRag=
 github.com/DaniilOr/microtracing v0.0.0-20210218123243-d308b204ccdf h1:QOFoZ4UGp/UZpM7GtNm5yd2+Jv5Z4HMiIcTtOTDkr6E=
+github.com/DaniilOr/microtracing v0.0.0-20210218140912-77db3d33edf9 h1:ZEawCyyZ+O1dUNN0lRXIUP4ge697he/u4j9t47nJOmA=
 github.com/DaniilOr/microtracing/services/auth v0.0.0-20210218104637-00d51fd7c472 h1:NNOSfFRxaEdwDtbEAhTrnOTr7+i12zsonhTNceaN8w4=
 github.com/DaniilOr/microtracing/services/auth v0.0.0-20210218104637-00d51fd7c472/go.mod h1:1ELg0jmMy2xZ/rq9RGzcMnLjbPyh++kYWCLQcTIi5gs=
 github.com/DaniilOr/microtracing/services/transactions v0.0.0-20210218123243-d308b204ccdf h1:KFyQzKy03gNZawSdB3l/pYuVY/4gvjxnygA41un8hpw=

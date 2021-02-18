@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/DaniilOr/microtracing/services/backend/pkg/auth"
+	"github.com/DaniilOr/microtracing/services/backend/pkg/transactions"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"log"

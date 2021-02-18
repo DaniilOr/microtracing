@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/DaniilOr/microtracing/services/backend/pkg/auth"
 	"github.com/DaniilOr/microtracing/services/backend/cmd/app"
+	"github.com/DaniilOr/microtracing/services/backend/pkg/transactions"
 	"github.com/go-chi/chi"
 	"log"
 	"net"
@@ -50,7 +51,7 @@ func execute(addr string, authURL string, transactionsAPIURL string) error {
 	if err != nil{
 		return err
 	}
-	transactionsSvc := transactions.NewService(&http.Client{}, transactionsAPIURL)
+	transactionsSvc := transactions.NewService(transactionsAPIURL)
 
 	mux := chi.NewRouter()
 
