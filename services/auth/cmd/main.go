@@ -8,9 +8,9 @@ import (
 	"log"
 	"microtracing/services/auth/cmd/app"
 	"microtracing/services/auth/pkg/auth"
+	serverPb "microtracing/services/auth/pkg/server"
 	"net"
 	"os"
-	serverPb "microtracing/services/auth/pkg/server"
 )
 
 const (
