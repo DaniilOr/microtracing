@@ -4,8 +4,8 @@ import (
 	"context"
 	"go.opencensus.io/trace"
 	"log"
-	"microtracing/services/auth/pkg/auth"
-	serverPb "microtracing/services/auth/pkg/server"
+	"github.com/DaniilOr/microtracing/services/auth/pkg/auth"
+	serverPb "github.com/DaniilOr/microtracing/services/auth/pkg/server"
 )
 
 type Server struct {

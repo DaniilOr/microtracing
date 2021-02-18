@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"github.com/jackc/pgx/pgxpool"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"go.opencensus.io/plugin/ocgrpc"
 	"google.golang.org/grpc"
 	"log"
-	"microtracing/services/auth/cmd/app"
-	"microtracing/services/auth/pkg/auth"
-	serverPb "microtracing/services/auth/pkg/server"
+	"github.com/DaniilOr/microtracing/services/auth/cmd/app"
+	"github.com/DaniilOr/microtracing/services/auth/pkg/auth"
+	serverPb "github.com/DaniilOr/microtracing/services/auth/pkg/server"
 	"net"
 	"os"
 )
