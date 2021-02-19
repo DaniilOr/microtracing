@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	defaultPort = "9999"
+	defaultPort = "8888"
 	defaultHost = "0.0.0.0"
 	defaultDSN  = "postgres://app:pass@transactionsdb:5432/db"
 )

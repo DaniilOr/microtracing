@@ -1,7 +1,10 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/DaniilOr/microtracing v0.0.0-20210219093025-68e4de1b064d h1:LHNojjUh3SwZbD8j5GXYhHOf5B6bSaPyNLoqjuymejc=
 github.com/DaniilOr/microtracing/services/auth v0.0.0-20210218104637-00d51fd7c472 h1:NNOSfFRxaEdwDtbEAhTrnOTr7+i12zsonhTNceaN8w4=
 github.com/DaniilOr/microtracing/services/auth v0.0.0-20210218104637-00d51fd7c472/go.mod h1:1ELg0jmMy2xZ/rq9RGzcMnLjbPyh++kYWCLQcTIi5gs=
+github.com/DaniilOr/microtracing/services/transactions v0.0.0-20210218143633-fd506a6b2876 h1:CsHxAB3aNsdnztaySXBfO5O70wuXXSQbJ8e7qjIxnJ8=
+github.com/DaniilOr/microtracing/services/transactions v0.0.0-20210218143633-fd506a6b2876/go.mod h1:Pp/DBqlEYoBCLlJ3pnvN6wAWx1DG8REpIJK/gwrPTxo=
 github.com/DaniilOr/microtracing/services/transactions-api v0.0.0-20210218143633-fd506a6b2876 h1:ZQ2uSkwacRoyXsAQZKwknD+hEWxC6uiGutWxwd2y08A=
 github.com/DaniilOr/microtracing/services/transactions-api v0.0.0-20210218143633-fd506a6b2876/go.mod h1:tWt0tUmmlLZ+0vOd0lbN5LzSl8T/MKzaiiToTGj0KgA=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

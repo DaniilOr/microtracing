@@ -82,41 +82,25 @@ func (s *Server) token(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (s *Server) transactions(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Set("Content-Type", "application/json")
-	_, err := writer.Write([]byte(`
-[
-	{
-		"id": 1,
-		"amount": "3000"
+	userID, err := AuthFrom(request.Context())
+	if err != nil {
+		log.Printf("can't find userID in context: %v", err)
+		http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
 	}
-]
-	`))
+	data, err := s.transactionsSvc.Transactions(request.Context(), userID)
+	if err != nil {
+		log.Printf("Transactions Service returns error: %v", err)
+		http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	writer.Header().Set("Content-Type", "application/json")
+	_, err = writer.Write(data)
 	if err != nil {
 		log.Print(err)
 		return
 	}
 }
 
-/*userID, err := AuthFrom(request.Context())
-if err != nil {
-	log.Printf("can't find userID in context: %v", err)
-	http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-	return
-}
-writer.Write([]byte({})
-
-data, err := s.transactionsSvc.Transactions(request.Context(), userID)
-if err != nil {
-	log.Printf("Transactions Service returns error: %v", err)
-	http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-	return
-}
-
-writer.Header().Set("Content-Type", "application/json")
-_, err = writer.Write(data)
-if err != nil {
-	log.Print(err)
-	return
-}
-*/
 
