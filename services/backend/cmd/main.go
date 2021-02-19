@@ -1,9 +1,8 @@
 package main
 
 import (
-	"github.com/DaniilOr/microtracing/services/backend/pkg/auth"
 	"github.com/DaniilOr/microtracing/services/backend/cmd/app"
-	"github.com/DaniilOr/microtracing/services/backend/pkg/transactions"
+	"github.com/DaniilOr/microtracing/services/backend/pkg/auth"
 	"github.com/go-chi/chi"
 	"log"
 	"net"
@@ -15,8 +14,8 @@ import (
 const (
 	defaultPort               = "9999"
 	defaultHost               = "0.0.0.0"
-	defaultAuthURL            = "0.0.0.0:8080"
-	defaultTransactionsAPIURL = "0.0.0.0:8888"
+	defaultAuthURL            = "auth:8080"
+	defaultTransactionsAPIURL = "transactions:8888"
 )
 
 func main() {
@@ -51,12 +50,12 @@ func execute(addr string, authURL string, transactionsAPIURL string) error {
 	if err != nil{
 		return err
 	}
-	transactionsSvc := transactions.NewService(transactionsAPIURL)
+	//transactionsSvc := transactions.NewService(transactionsAPIURL)
 
 	mux := chi.NewRouter()
 
-	application := app.NewServer(authSvc, transactionsSvc, mux)
-	err := application.Init()
+	application := app.NewServer(authSvc, nil, mux)
+	err = application.Init()
 	if err != nil {
 		log.Print(err)
 		return err

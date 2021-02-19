@@ -1,0 +1,30 @@
+# переменные заданы в файле .envversion: '3.7'
+services:
+  backend:
+    build:
+      context: services/backend
+    image: backend
+    ports:
+      - 9999:9999
+    links:
+      - auth
+  auth:
+    build:
+      context: services/auth
+    image: auth
+    ports:
+      - 8080:8080
+    environment:
+      - APP_DSN=postgres://app:pass@authdb:5432/db
+  authdb:
+    image: postgres:12.3-alpine
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=app
+      - POSTGRES_DB=db
+    volumes:
+      - ./services/auth/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+  transactions:
+    build:
+      context: services/transactions
+    image: service/transactions
