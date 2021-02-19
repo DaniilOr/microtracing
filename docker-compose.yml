@@ -9,12 +9,15 @@ services:
     links:
       - auth
       - transactions
+      - jaeger
   auth:
     build:
       context: services/auth
     image: auth
     ports:
       - 8080:8080
+    links:
+      - jaeger
     environment:
       - APP_DSN=postgres://app:pass@authdb:5432/db
   authdb:
@@ -31,6 +34,8 @@ services:
     image: transactions
     ports:
       - 8888:8888
+    links:
+      - jaeger
     environment:
       - APP_DSN=postgres://app:pass@transactionsdb:5432/db
   transactionsdb:
@@ -41,3 +46,11 @@ services:
       - POSTGRES_DB=db
     volumes:
       - ./services/transactions/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+  jaeger:
+    image: jaegertracing/all-in-one:1.20
+    ports:
+        - "5775:5775/udp"
+        - "6831:6831/udp"
+        - "6832:6832/udp"
+        - "5778:5778"
+        - "16686:16686"

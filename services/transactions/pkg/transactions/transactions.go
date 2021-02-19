@@ -4,7 +4,8 @@ import (
 "context"
 "github.com/jackc/pgx/v4"
 "github.com/jackc/pgx/v4/pgxpool"
-"time"
+	"go.opencensus.io/trace"
+	"time"
 )
 
 type Service struct {
@@ -24,6 +25,8 @@ type Transaction struct {
 }
 
 func (s *Service) Transactions(ctx context.Context, userID int64) ([]*Transaction, error) {
+	ctx, span := trace.StartSpan(ctx, "route: transactions")
+	defer span.End()
 	transactions := make([]*Transaction, 0)
 	rows, err := s.pool.Query(ctx, `
 		SELECT id, userid, category, amount, created FROM transactions WHERE userid = $1 ORDER BY id DESC LIMIT 50

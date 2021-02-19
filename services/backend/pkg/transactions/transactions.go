@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	serverPb "github.com/DaniilOr/microtracing/services/transactions/pkg/server"
+	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
 )
 type Service struct{
@@ -25,6 +26,8 @@ func Init(addr string) (*Service, error){
 }
 
 func (s*Service) Transactions(ctx context.Context, userId int64) (data []byte, err error) {
+	ctx, span := trace.StartSpan(context.Background(), "oc.tutorials.grpc.ClientCapitalize")
+	defer span.End()
 	response, err := s.client.Transactions(ctx, &serverPb.TransactionsRequest{UserID: userId})
 	if err != nil{
 		return nil, err

@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	serverPb "github.com/DaniilOr/microtracing/services/auth/pkg/server"
+	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
 )
 
@@ -21,6 +22,8 @@ func Init(addr string) (*Service, error){
 }
 
 func (s*Service) Token(ctx context.Context, login string, password string) (token string, err error) {
+	ctx, span := trace.StartSpan(context.Background(), "oc.tutorials.grpc.ClientCapitalize")
+	defer span.End()
 	response, err := s.client.Token(ctx, &serverPb.TokenRequest{Login: login, Password: password})
 	if err != nil{
 		return "", err
