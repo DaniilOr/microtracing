@@ -24,7 +24,3 @@ services:
       - POSTGRES_DB=db
     volumes:
       - ./services/auth/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-  transactions:
-    build:
-      context: services/transactions
-    image: service/transactions
