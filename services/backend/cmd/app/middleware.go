@@ -3,6 +3,8 @@ package app
 import (
 	"context"
 	"errors"
+	"github.com/DaniilOr/microtracing/services/auth/pkg/jwt/symmetric"
+	authorization "github.com/DaniilOr/microtracing/services/auth/pkg/auth"
 	"net/http"
 )
 
@@ -20,6 +22,13 @@ func (c *contextKey) String() string {
 	return c.name
 }
 
+type Data struct {
+	UserID int64    `json:"userId"`
+	Roles  []string `json:"roles"`
+	Issued int64    `json:"iat"`
+	Expire int64    `json:"exp"`
+}
+
 func Auth(authFunc AuthFunc) func(http.Handler) http.Handler {
 	return func(handler http.Handler) http.Handler {
 		return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
@@ -32,6 +41,28 @@ func Auth(authFunc AuthFunc) func(http.Handler) http.Handler {
 			auth, err := authFunc(request.Context(), token)
 			if err != nil {
 				// упрощённый вариант, нужно ещё добавить проверку на то, что удалённый сервис "отвалился"
+				if !errors.As(err, &authorization.ErrUserNotFound){
+					key := []byte("some secter key goes here")
+					verified, err := symmetric.Verify(token, key)
+					if err != nil{
+						writer.WriteHeader(http.StatusForbidden)
+						return
+					}
+					if !verified{
+						writer.WriteHeader(http.StatusUnauthorized)
+						return
+					}
+					var decoded* Data
+					err = symmetric.Decode(token, &decoded)
+					if err != nil {
+						writer.WriteHeader(http.StatusForbidden)
+						return
+					}
+					ctx := context.WithValue(request.Context(), authContextKey, decoded.UserID)
+					request = request.WithContext(ctx)
+					handler.ServeHTTP(writer, request)
+					return
+				}
 				writer.WriteHeader(http.StatusForbidden)
 				return
 			}
