@@ -26,7 +26,7 @@ func Init(addr string) (*Service, error){
 }
 
 func (s*Service) Transactions(ctx context.Context, userId int64) (data []byte, err error) {
-	ctx, span := trace.StartSpan(context.Background(), "route: transactions")
+	ctx, span := trace.StartSpan(ctx, "route: transactions")
 	defer span.End()
 	response, err := s.client.Transactions(ctx, &serverPb.TransactionsRequest{UserID: userId})
 	if err != nil{

@@ -22,7 +22,7 @@ func Init(addr string) (*Service, error){
 }
 
 func (s*Service) Token(ctx context.Context, login string, password string) (token string, err error) {
-	ctx, span := trace.StartSpan(context.Background(), "route: token")
+	ctx, span := trace.StartSpan(ctx, "route: token")
 	defer span.End()
 	response, err := s.client.Token(ctx, &serverPb.TokenRequest{Login: login, Password: password})
 	if err != nil{
