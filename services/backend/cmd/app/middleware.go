@@ -2,10 +2,14 @@ package app
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
+	"fmt"
 	"github.com/DaniilOr/microtracing/services/auth/pkg/jwt/symmetric"
 	authorization "github.com/DaniilOr/microtracing/services/auth/pkg/auth"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 var ErrNoAuth = errors.New("no auth in context")
@@ -58,7 +62,8 @@ func Auth(authFunc AuthFunc) func(http.Handler) http.Handler {
 						writer.WriteHeader(http.StatusForbidden)
 						return
 					}
-					ctx := context.WithValue(request.Context(), authContextKey, decoded.UserID)
+					cipher := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%d:%v", decoded.UserID, decoded.Roles)))
+					ctx := context.WithValue(request.Context(), authContextKey, cipher)
 					request = request.WithContext(ctx)
 					handler.ServeHTTP(writer, request)
 					return
@@ -77,6 +82,19 @@ func Auth(authFunc AuthFunc) func(http.Handler) http.Handler {
 func AuthFrom(ctx context.Context) (int64, error) {
 	if value := ctx.Value(authContextKey); value != nil {
 		if id, ok := value.(int64); ok {
+			return id, nil
+		}
+		if cipher, ok := value.(string); ok{
+			decoded, err := base64.StdEncoding.DecodeString(cipher)
+			if err != nil {
+				return 0, err
+			}
+			plaintext := string(decoded)
+			items := strings.Split(plaintext, ":")
+			id, err := strconv.ParseInt(items[0], 10, 64)
+			if err != nil{
+				return 0, err
+			}
 			return id, nil
 		}
 	}

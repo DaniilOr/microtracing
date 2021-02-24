@@ -29,7 +29,6 @@ func (s *Server) Token(ctx context.Context, request *serverPb.TokenRequest) ( * 
 	return &response, nil
 }
 
-// Доступно всем
 func (s *Server) Id (ctx context.Context, request *serverPb.IdRequest) (*serverPb.IdResponse, error) {
 	userID, err := s.authSvc.UserID(ctx, request.Token)
 	if err != nil {
