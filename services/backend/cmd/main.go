@@ -19,6 +19,7 @@ const (
 	defaultHost               = "0.0.0.0"
 	defaultAuthURL            = "auth:8080"
 	defaultTransactionsAPIURL = "transactions:8888"
+
 )
 func InitJaeger(serviceName string) error{
 	exporter, err := jaeger.NewExporter(jaeger.Options{
