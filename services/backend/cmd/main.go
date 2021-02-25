@@ -19,7 +19,8 @@ const (
 	defaultHost               = "0.0.0.0"
 	defaultAuthURL            = "auth:8080"
 	defaultTransactionsAPIURL = "transactions:8888"
-
+	defaultCertificatePath = "put path here"
+	defaultPrivateKeyPath = "put path here"
 )
 func InitJaeger(serviceName string) error{
 	exporter, err := jaeger.NewExporter(jaeger.Options{
@@ -65,13 +66,24 @@ func main() {
 		log.Println(err)
 		os.Exit(1)
 	}
-	if err := execute(net.JoinHostPort(host, port), authURL, transactionsAPIURL); err != nil {
+
+	certificatePath, ok := os.LookupEnv("APP_CERT_PATH")
+	if !ok {
+		certificatePath = defaultCertificatePath
+	}
+
+	privateKeyPath, ok := os.LookupEnv("APP_PRIVATE_KEY_PATH")
+	if !ok {
+		privateKeyPath = defaultPrivateKeyPath
+	}
+
+	if err := execute(net.JoinHostPort(host, port), certificatePath, privateKeyPath, authURL, transactionsAPIURL); err != nil {
 		log.Println(err)
 		os.Exit(1)
 	}
 }
 
-func execute(addr string, authURL string, transactionsAPIURL string) error {
+func execute(addr string, certificate string, key string,  authURL string, transactionsAPIURL string) error {
 	authSvc, err := auth.Init(authURL)
 	if err != nil{
 		return err
@@ -93,5 +105,5 @@ func execute(addr string, authURL string, transactionsAPIURL string) error {
 		Addr:    addr,
 		Handler: application,
 	}
-	return server.ListenAndServe()
+	return server.ListenAndServeTLS(certificate, key)
 }

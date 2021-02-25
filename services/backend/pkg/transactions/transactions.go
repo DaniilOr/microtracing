@@ -6,7 +6,10 @@ import (
 	serverPb "github.com/DaniilOr/microtracing/services/transactions/pkg/server"
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
+const defaultCertificatePath = "put path herem"
+
 type Service struct{
 	client serverPb.TransactionsServerClient
 }
@@ -16,7 +19,11 @@ type ResponseDTO struct{
 	Cost int64 `json:"amount"`
 }
 func Init(addr string) (*Service, error){
-	conn, err := grpc.Dial(addr, grpc.WithInsecure())
+	creds, err := credentials.NewClientTLSFromFile(defaultCertificatePath, "")
+	if err != nil {
+		return nil, err
+	}
+	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		return  nil, err
 	}

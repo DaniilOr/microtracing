@@ -15,7 +15,6 @@ client.test("Request executed successfully", function() {
 %}
 
 ### используем токен для запроса
-
 GET http://localhost:9999/api/transactions
 Authorization: {{token}}
 
