@@ -13,7 +13,7 @@ import (
 	"os"
 )
 const defaultPort = "9999"
-const defaultHost = "0.0.0.0"
+const defaultHost = "netology.local"
 const defaultCertificatePath = "./tls/certificate.pem"
 
 func main() {
