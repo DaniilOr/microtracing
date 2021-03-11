@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 	authorization "github.com/DaniilOr/microtracing/services/auth/pkg/auth"
-	"security/microtracing/services/backend/pkg/jwt/symmetric"
+	"github.com/DaniilOr/microtracing/services/backend/pkg/jwt/symmetric"
 )
 
 var ErrNoAuth = errors.New("no auth in context")
