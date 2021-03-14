@@ -3,14 +3,15 @@ package main
 import (
 	"context"
 	"contrib.go.opencensus.io/exporter/jaeger"
+	"github.com/DaniilOr/microtracing/services/auth/cmd/app"
+	"github.com/DaniilOr/microtracing/services/auth/pkg/auth"
+	serverPb "github.com/DaniilOr/microtracing/services/auth/pkg/server"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"go.opencensus.io/plugin/ocgrpc"
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"log"
-	"github.com/DaniilOr/microtracing/services/auth/cmd/app"
-	"github.com/DaniilOr/microtracing/services/auth/pkg/auth"
-	serverPb "github.com/DaniilOr/microtracing/services/auth/pkg/server"
 	"net"
 	"os"
 )
@@ -19,6 +20,8 @@ const (
 	defaultPort = "8080"
 	defaultHost = "0.0.0.0"
 	defaultDSN  = "postgres://app:pass@authdb:5432/db"
+	defaultCertificatePath = "./tls/server-cert.pem"
+	defaultPrivateKeyPath = "./tls/server-key.pem"
 )
 func InitJaeger(serviceName string) error{
 	exporter, err := jaeger.NewExporter(jaeger.Options{
@@ -75,8 +78,8 @@ func execute(addr string, dsn string) error {
 		log.Print(err)
 		return err
 	}
-
-	grpcServer := grpc.NewServer(grpc.StatsHandler(&ocgrpc.ServerHandler{}))
+	creds, err := credentials.NewServerTLSFromFile(defaultCertificatePath, defaultPrivateKeyPath)
+	grpcServer := grpc.NewServer(grpc.Creds(creds), grpc.StatsHandler(&ocgrpc.ServerHandler{}))
 	authSVC := auth.NewService(pool)
 	server := app.NewServer(authSVC, ctx)
 	serverPb.RegisterAuthServerServer(grpcServer, server)

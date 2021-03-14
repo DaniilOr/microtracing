@@ -7,6 +7,7 @@ import (
 	"go.opencensus.io/plugin/ocgrpc"
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"log"
 	"net"
 	"os"
@@ -19,6 +20,8 @@ const (
 	defaultPort = "8888"
 	defaultHost = "0.0.0.0"
 	defaultDSN  = "postgres://app:pass@transactionsdb:5432/db"
+	defaultCertificatePath = "./tls/server-cert.pem"
+	defaultPrivateKeyPath = "./tls/server-key.pem"
 )
 func InitJaeger(serviceName string) error{
 	exporter, err := jaeger.NewExporter(jaeger.Options{
@@ -76,7 +79,8 @@ func execute(addr string, dsn string) error {
 		return err
 	}
 
-	grpcServer := grpc.NewServer(grpc.StatsHandler(&ocgrpc.ServerHandler{}))
+	creds, err := credentials.NewServerTLSFromFile(defaultCertificatePath, defaultPrivateKeyPath)
+	grpcServer := grpc.NewServer(grpc.Creds(creds), grpc.StatsHandler(&ocgrpc.ServerHandler{}))
 	transactionsSVC := transactions.NewService(pool)
 	server := app.NewServer(transactionsSVC, ctx)
 	serverPb.RegisterTransactionsServerServer(grpcServer, server)
