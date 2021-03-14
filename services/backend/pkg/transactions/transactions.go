@@ -6,17 +6,20 @@ import (
 	serverPb "github.com/DaniilOr/microtracing/services/transactions/pkg/server"
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 type Service struct{
 	client serverPb.TransactionsServerClient
 }
+const 	defaultPrivateKeyPath = "./tls/server-key.pem"
 
 type ResponseDTO struct{
 	Category string `json:"category"`
 	Cost int64 `json:"amount"`
 }
 func Init(addr string) (*Service, error){
-	conn, err := grpc.Dial(addr, grpc.WithInsecure())
+	creds, err := credentials.NewClientTLSFromFile(defaultPrivateKeyPath, "")
+	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		return  nil, err
 	}
