@@ -1,12 +1,21 @@
 # переменные заданы в файле .envversion: '3.7'
 services:
+  generator:
+    build:
+        context: services/tls
+    image: generator
+    volumes:
+    - /services/tls:/keys :rw
   backend:
     build:
       context: services/backend
     image: backend
+    volumes:
+     - /services/tls:/tls  :ro
     ports:
       - 9999:9999
     links:
+      - generator
       - auth
       - transactions
       - jaeger
@@ -16,7 +25,10 @@ services:
     image: auth
     ports:
       - 8080:8080
+    volumes:
+     - /services/tls:/tls  :ro
     links:
+      - generator
       - jaeger
     environment:
       - APP_DSN=postgres://app:pass@authdb:5432/db
@@ -34,7 +46,10 @@ services:
     image: transactions
     ports:
       - 8888:8888
+    volumes:
+     - /services/tls:/tls :ro
     links:
+      - generator
       - jaeger
     environment:
       - APP_DSN=postgres://app:pass@transactionsdb:5432/db

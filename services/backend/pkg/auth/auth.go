@@ -6,15 +6,20 @@ import (
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"os"
 )
-const 	defaultPrivateKeyPath = "./tls/server-key.pem"
+const defaultCertificatePath = "/tls/certificate.pem"
 
 type Service struct{
 	client serverPb.AuthServerClient
 }
 
 func Init(addr string) (*Service, error){
-	creds, err := credentials.NewClientTLSFromFile(defaultPrivateKeyPath, "")
+	certificatePath, ok := os.LookupEnv("APP_CERTIFICATE_PATH")
+	if !ok {
+		certificatePath = defaultCertificatePath
+	}
+	creds, err := credentials.NewClientTLSFromFile(certificatePath, "")
 	if err != nil {
 		return nil, err
 	}

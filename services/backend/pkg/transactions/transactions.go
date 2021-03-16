@@ -7,18 +7,25 @@ import (
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"os"
 )
 type Service struct{
 	client serverPb.TransactionsServerClient
 }
-const 	defaultPrivateKeyPath = "./tls/server-key.pem"
+const defaultCertificatePath = "/tls/certificate.pem"
+
 
 type ResponseDTO struct{
 	Category string `json:"category"`
 	Cost int64 `json:"amount"`
 }
 func Init(addr string) (*Service, error){
-	creds, err := credentials.NewClientTLSFromFile(defaultPrivateKeyPath, "")
+	certificatePath, ok := os.LookupEnv("APP_CERTIFICATE_PATH")
+	if !ok {
+		certificatePath = defaultCertificatePath
+	}
+
+	creds, err := credentials.NewClientTLSFromFile(certificatePath, "")
 	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(creds))
 	if err != nil {
 		return  nil, err
