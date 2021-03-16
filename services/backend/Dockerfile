@@ -9,5 +9,4 @@ FROM alpine:3.12
 COPY --from=build /app/app.bin /app.bin
 COPY ./wait.sh /wait.sh
 RUN chmod +x ./wait.sh
-
 ENTRYPOINT ["/wait.sh", "/app.bin"]

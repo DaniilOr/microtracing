@@ -1,17 +1,16 @@
 # переменные заданы в файле .envversion: '3.7'
 services:
   generator:
-    build:
-        context: services/tls
+    build: .
     image: generator
     volumes:
-    - /services/tls:/keys :rw
+    - ./services/tls:/keys
   backend:
     build:
       context: services/backend
     image: backend
     volumes:
-     - /services/tls:/tls  :ro
+     - ./services/tls:/tls:ro
     ports:
       - 9999:9999
     links:
@@ -26,7 +25,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-     - /services/tls:/tls  :ro
+     - ./services/tls:/tls:ro
     links:
       - generator
       - jaeger
@@ -47,7 +46,7 @@ services:
     ports:
       - 8888:8888
     volumes:
-     - /services/tls:/tls :ro
+     - ./services/tls:/tls:ro
     links:
       - generator
       - jaeger

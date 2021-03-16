@@ -1,6 +1,7 @@
+
 FROM alpine:3
 
-COPY generate.sh /
+COPY ./generate.sh /
 
 RUN set -eux; \
     apk add --no-cache openssl; \
@@ -9,7 +10,6 @@ RUN set -eux; \
     chown generator:generator /keys; \
     chown generator:generator /generate.sh; \
     chmod +x /generate.sh
-
 
 USER generator
 WORKDIR /keys

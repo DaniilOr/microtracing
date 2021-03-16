@@ -12,7 +12,7 @@ import (
 type Service struct{
 	client serverPb.TransactionsServerClient
 }
-const defaultCertificatePath = "/tls/certificate.pem"
+const defaultCertificatePath = "./tls/certificate.pem"
 
 
 type ResponseDTO struct{
