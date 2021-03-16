@@ -2,7 +2,7 @@
 
 openssl req -newkey rsa:2048 -nodes -x509 -keyout key.pem -out certificate.pem \
  -subj "/C=RU/ST=Moscow/L=Moscow/O=Development/OU=Dev/CN=netology.local" \
- -addext "subjectAltName = DNS:netology.local,IP:0.0.0.0"
+ -addext "subjectAltName = DNS:netology.local"
 # 1. Generate CA's private key and self-signed certificate
 #openssl req -x509 -newkey rsa:4096 -days 365 -nodes -keyout ca-key.pem -out ca-cert.pem -subj "/C=RU/ST=Moscow/L=Moscow/O=Dev/OU=Dev/CN=netology.local" -addext "subjectAltName=DNS:netology.local,IP:0.0.0.0"
 

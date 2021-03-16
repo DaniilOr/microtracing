@@ -60,6 +60,7 @@ func (s *Server) token(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	token, err := s.authSvc.Token(request.Context(), login, password)
+
 	if err != nil {
 		log.Printf("Auth Service returns error: %v", err)
 		http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)

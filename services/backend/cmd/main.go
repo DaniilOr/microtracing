@@ -17,8 +17,8 @@ import (
 const (
 	defaultPort               = "9999"
 	defaultHost               = "0.0.0.0"
-	defaultAuthURL            = "auth:8080"
-	defaultTransactionsAPIURL = "transactions:8888"
+	defaultAuthURL            = "netology.local:8080"
+	defaultTransactionsAPIURL = "netology.local:8888"
 )
 func InitJaeger(serviceName string) error{
 	exporter, err := jaeger.NewExporter(jaeger.Options{
@@ -75,7 +75,6 @@ func execute(addr string, authURL string, transactionsAPIURL string) error {
 	if err != nil{
 		return err
 	}
-
 	mux := chi.NewRouter()
 	transactionsSVC, err := transactions.Init(transactionsAPIURL)
 	if err != nil{

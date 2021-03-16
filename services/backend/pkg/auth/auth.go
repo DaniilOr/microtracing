@@ -19,6 +19,7 @@ func Init(addr string) (*Service, error){
 	if !ok {
 		certificatePath = defaultCertificatePath
 	}
+
 	creds, err := credentials.NewClientTLSFromFile(certificatePath, "")
 	if err != nil {
 		return nil, err
@@ -28,18 +29,18 @@ func Init(addr string) (*Service, error){
 	if err != nil {
 		return nil, err
 	}
-	if err != nil {
-		return  nil, err
-	}
+
 	client :=  serverPb.NewAuthServerClient(conn)
 	server := Service{client: client}
 	return &server, nil
 }
 
 func (s*Service) Token(ctx context.Context, login string, password string) (token string, err error) {
-	ctx, span := trace.StartSpan(context.Background(), "route: token")
+	ctx, span := trace.StartSpan(ctx, "route: token")
 	defer span.End()
+
 	response, err := s.client.Token(ctx, &serverPb.TokenRequest{Login: login, Password: password})
+
 	if err != nil{
 		return "", err
 	}

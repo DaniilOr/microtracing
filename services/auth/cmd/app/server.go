@@ -20,7 +20,9 @@ func NewServer(authSvc *auth.Service, ctx context.Context) *Server {
 func (s *Server) Token(ctx context.Context, request *serverPb.TokenRequest) ( * serverPb.TokenResponse, error) {
 	ctx, span := trace.StartSpan(ctx, "route: token")
 	defer span.End()
+
 	token, err := s.authSvc.Login(ctx, request.Login, request.Password)
+
 	if err != nil {
 		log.Println(err)
 		return nil, err
