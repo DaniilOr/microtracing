@@ -20,8 +20,8 @@ const (
 	defaultPort = "8080"
 	defaultHost = "0.0.0.0"
 	defaultDSN  = "postgres://app:pass@authdb:5432/db"
-	defaultCertificatePath = "./tls/certificate.pem"
-	defaultPrivateKeyPath = "./tls/key.pem"
+	defaultCertificatePath = "./tls/certificate_auth.pem"
+	defaultPrivateKeyPath = "./tls/key_auth.pem"
 )
 func InitJaeger(serviceName string) error{
 	exporter, err := jaeger.NewExporter(jaeger.Options{
@@ -68,6 +68,10 @@ func main() {
 }
 
 func execute(addr string, dsn string) error {
+	creds, err := credentials.NewServerTLSFromFile(defaultCertificatePath, defaultPrivateKeyPath)
+	if err != nil{
+		return err
+	}
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		return err
@@ -78,11 +82,11 @@ func execute(addr string, dsn string) error {
 		log.Print(err)
 		return err
 	}
-	creds, err := credentials.NewServerTLSFromFile(defaultCertificatePath, defaultPrivateKeyPath)
 	grpcServer := grpc.NewServer(grpc.Creds(creds), grpc.StatsHandler(&ocgrpc.ServerHandler{}))
 	authSVC := auth.NewService(pool)
 	server := app.NewServer(authSVC, ctx)
 	serverPb.RegisterAuthServerServer(grpcServer, server)
+	log.Println("Auth is run")
 	return grpcServer.Serve(listener)
 }
 

@@ -74,7 +74,7 @@ func (s *Server) token(writer http.ResponseWriter, request *http.Request) {
 		http.Error(writer, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-
+	log.Println("Tururu")
 	writer.Header().Set("Content-Type", "application/json")
 	_, err = writer.Write(respBody)
 	if err != nil {

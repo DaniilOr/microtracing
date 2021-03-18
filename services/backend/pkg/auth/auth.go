@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"os"
 )
-const defaultCertificatePath = "./tls/certificate.pem"
+const defaultCertificatePath = "./tls/certificate_auth.pem"
 
 type Service struct{
 	client serverPb.AuthServerClient

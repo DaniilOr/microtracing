@@ -20,8 +20,8 @@ const (
 	defaultPort = "8888"
 	defaultHost = "0.0.0.0"
 	defaultDSN  = "postgres://app:pass@transactionsdb:5432/db"
-	defaultCertificatePath = "./tls/certificate.pem"
-	defaultPrivateKeyPath = "./tls/key.pem"
+	defaultCertificatePath = "./tls/certificate_trans.pem"
+	defaultPrivateKeyPath = "./tls/key_trans.pem"
 )
 func InitJaeger(serviceName string) error{
 	exporter, err := jaeger.NewExporter(jaeger.Options{
