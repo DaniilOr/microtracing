@@ -84,5 +84,6 @@ func execute(addr string, dsn string) error {
 	transactionsSVC := transactions.NewService(pool)
 	server := app.NewServer(transactionsSVC, ctx)
 	serverPb.RegisterTransactionsServerServer(grpcServer, server)
+	log.Println("Transactions is run")
 	return grpcServer.Serve(listener)
 }
